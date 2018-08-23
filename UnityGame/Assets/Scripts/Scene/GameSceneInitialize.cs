@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace UnityGame.GameScene
 {
@@ -31,7 +30,7 @@ namespace UnityGame.GameScene
 		{
 			if (Input.GetKeyDown(KeyCode.Return))
 			{
-				UnityEngine.SceneManagement.SceneManager.LoadScene("LoadingScene");
+				GameSceneManager.GetInstance().ChangeGameScene(EGameSceneType.Loading);
 			}
 		}
 

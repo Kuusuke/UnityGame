@@ -1,18 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UnityGame.GameScene
 {
 	public class GameSceneManager : IGameSceneManager
 	{
-		private readonly IGameScene nullGameScene = new GameSceneNull();
-
 		private IGameSceneFactory gameSceneFactory = null;
 
-		private IGameScene prevGameScene { get; set; }
+		private IGameScene prevGameScene { get; set; } = new GameSceneNull();
 
-		private IGameScene currentGameScene { get; set; }
+		private IGameScene currentGameScene { get; set; } = new GameSceneInitialize();
 
 		private static GameSceneManager instance = null;
 
@@ -34,11 +33,17 @@ namespace UnityGame.GameScene
 
 		public bool ChangeGameScene(EGameSceneType _type)
 		{
-			if (prevGameScene.GameSceneType == _type)
+			if (prevGameScene.GameSceneType != _type)
 			{
 				IGameScene tempGameScene = prevGameScene;
 				prevGameScene = currentGameScene;
 				currentGameScene = tempGameScene;
+			}
+			else
+			{
+				prevGameScene = currentGameScene;
+				currentGameScene = gameSceneFactory.Create(_type);
+				SceneManager.LoadScene();
 			}
 			return true;
 		}
